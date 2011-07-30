@@ -159,6 +159,13 @@ def main(args=None):
 	if args is None:
 		args = sys.argv[1:]
 
+	fileName = None
+	print(  args)
+	if len(args) >= 1:
+		fileName = args[0]
+		if fileName.startswith('-'):
+			fileName = 'key.txt'
+
 	# Parse arguments and options
 	parser = optparse.OptionParser(usage)
 	parser.add_option("-n", "--dry-run",
@@ -188,10 +195,10 @@ def main(args=None):
 	else:
 		input_mode = "b58"
 
-	if len(args) >= 1:
-		keyfile = open(args[0], 'rb' if options.input_bin else 'r')
-	else:
+	if fileName == None:
 		keyfile = sys.stdin
+	else:
+		keyfile = open(fileName, 'rb' if options.input_bin else 'r')
 
 	if options.datadir is None:
 		db_dir = util.determine_db_dir()
@@ -200,6 +207,9 @@ def main(args=None):
 
 	for keyLine in getTextLines(keyfile.read()):
 		import_key(keyLine, db_dir, input_mode=input_mode, dryrun=options.dryrun, verbose=options.verbose)
+
+	keyfile.close()
+
 
 if __name__ == "__main__":
 	sys.exit(main())
