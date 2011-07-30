@@ -1,37 +1,39 @@
 This is a modification of an old version of bitcointools:
 https://github.com/gavinandresen/bitcointools
 
-which incorporates Matt Giuca's privkeyimport:
+which incorporates a version of Matt Giuca's privkeyimport:
 https://code.launchpad.net/~mgiuca/+junk/bitcoin-import
 
 The purpose of this bitcointools version is to export a key from a bitcoin wallet and import it into a devcoin wallet.
 
-The procedure probably works, but it is awkward.  Once it is possible to import and export keys from the mainline client this modification will be obsolete.
+The procedure works, but is awkward.  Once it is possible to import and export keys from the mainline client this modification will be obsolete.
 
 For an example of using this in Linux, quit bitcoin and make a copy of the .bitcoin directory.  Also quit devcoin and make a copy of the .devcoin directory.
 
-Then print the bitcoin keys by typing in a terminal in the bitcointools directory:
-python dbdump.py --wallet
+Then print the bitcoin key you want to export by typing in a terminal in the bitcointools directory:
+python keydump.py <the address of the key you want to export>
 
-Then choose "Select All" to select all the terminal printing, then choose "Copy" to paste everything into a file, entire_wallet.txt.
+For example, if the address of the key you want to export is 175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W, you would type 
+python keydump.py 175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W
 
-Open the file entire_wallet.txt with a text editor, then find the bitcoin address of the key you want to import.
-
-Then save the base58 version of that private key to another file, named key.txt.
+This will save the base58 version of the private key with that address to a file named key.txt.
 
 Then in a terminal in a bitcointools directory, type:
-privkeyimport.py key.txt --datadir <your home directory>/.devcoin
+privkeyimport.py --datadir <your home directory>/.devcoin
 
 For example, if your home directory is david, you would type 
-privkeyimport.py key.txt --datadir /home/david/.devcoin
+privkeyimport.py --datadir /home/david/.devcoin
 
-This will add the private key in key.txt to the devcoin wallet.
+This will add the private key with the default key file name of key.txt to the devcoin wallet.  Then delete the file named key.txt so that if someone gets access to your computer they can't copy your private key and steal the money within.
 
-Then open devcoin and even if you don't see your key in your address book it should still be there.
+Then run devcoin-qt -rescan by typing in a terminal in the devcoin directory:
+./devcoin-qt -rescan
 
-Run bitcoin -rescan to ensure any transactions belonging to the imported key are added to the transaction list and balance.
+to ensure any transactions belonging to the imported key are added to the transaction list and balance.  Then open your devcoin-qt client and your balance will be up to date.  If the balance includes money sent to that private key, then even if you don't see your key in your receive address book, the key is in your wallet.
 
 
+
+Below is an explanation of other uses of bitcointools.
 
 ----- dbdump.py -----
 Run    dbdump.py --help    for usage.  Database files are opened read-only, but
@@ -75,3 +77,4 @@ Only half-baked because to be really useful I'd have to write serialize routines
 Read JSON list-of-objects from standard input, writes CSV file to standard output.
 Useful for converting bitcoind's listtransactions output to CSV that can be
 imported into a spreadsheet.
+
