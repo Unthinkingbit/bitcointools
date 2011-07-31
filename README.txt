@@ -24,12 +24,14 @@ privkeyimport.py --datadir <your home directory>/.devcoin
 For example, if your home directory is david, you would type 
 privkeyimport.py --datadir /home/david/.devcoin
 
-This will add the private key with the default key file name of key.txt to the devcoin wallet.  Then delete the file named key.txt so that if someone gets access to your computer they can't copy your private key and steal the money within.
+This will add the private key with the default key file name of key.txt to the devcoin wallet.
 
 Then run devcoin-qt -rescan by typing in a terminal in the devcoin directory:
 ./devcoin-qt -rescan
 
 to ensure any transactions belonging to the imported key are added to the transaction list and balance.  Then open your devcoin-qt client and your balance will be up to date.  If the balance includes money sent to that private key, then even if you don't see your key in your receive address book, the key is in your wallet.
+
+Once everything works, delete the file named key.txt so that if someone gets access to your computer they can't copy your private key and steal the money within.  For the same reason, delete the .bitcoin and .devcoin backups.  Then, assuming you encrypt your wallet after use so that if someone gets access to your computer they can't copy your wallet, encrypt the bitcoin wallet and the devcoin wallet.
 
 
 
